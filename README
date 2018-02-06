@@ -1,0 +1,73 @@
+This file describes how to run the ARIEL script written by Jennifer Asimit
+in the Applied Statistical Genetics group led by Eleftheia Zeggini at 
+the Wellcome Trust Sanger Institute.
+
+The analysis requires two source files:
+1) ARIELqcc_script_general.R
+2) ARIELqcc.R
+
+The first script (ARIELqcc_script_general.R) is the only script that the user needs to call,
+but the other script is necessary for the main script to work properly.  The scripts are 
+written such that all the scripts need to be in the same directory as the data so that they can be found.
+
+The main script (ARIELqcc_script_general.R) takes 6 input parameters:
+1) Chromosome number to analyze (e.g. an interger between 1-22)
+2) Minor Allele Frequency Cutoff for analysis (e.g. 0.05)
+3) Genotype File Name
+4) Phenotype File Name
+5) Gene Definition File
+6) Output File Name
+7) Non-consensus Quality Score Indicator (1 for non-consensus scores, 0 for consensus scores) 
+
+The Genotype File is a tab-delimited file with one line per SNP and 6+3N columns, where N is the number
+of individuals being analyzed. An example Genotype File, data-example.txt.gz is provided within ariel.tar.gz. The columns must be in this order:
+1) Chromosome
+2) Position
+3) ID
+4) Reference Allele
+5) Alternative Allele
+6) consensus SNP Quality Score
+7) Allele 1 for Individual 1 (1=alt allele, 0=ref allele)
+8) Allele 2 for Individual 1 (1=alt allele, 0=ref allele)
+9) Genotype Quality Score for Genotype of Individual 1 OR Non-consensus SNP Quality Score of Individual i
+....and so on for each individual to analyze
+
+
+The Phenotype File is a standard 6-column PLINK .fam file with individuals in the same order as the genotype file.
+The 6 columns are:
+1) Pedigree ID
+2) Individual ID
+3) Father ID
+4) Mother ID
+5) Sex
+6) Case/Control Status
+
+
+The Gene Definition File has the following 4 columns:
+1) Gene name
+2) Chromosome Number
+3) Gene Start Position
+4) Gene End Position
+
+The script is called in the following manner from the command line:
+
+>R CMD BATCH '--args arg_1 arg_2 arg_3 arg_4 arg_5 arg_6' ARIELqcc_general.R chr_<arg_1>_ARIEL_script.Rout
+
+The output file is a tab-delimited file with 16 columns:
+1)  Gene Name
+2)  Total Number of Variants in Gene
+3)  Chromosome
+4)  Gene Start Position
+5)  Gene Stop Position
+6)  Number of Low Frequency Variants Analyzed in Gene
+7)  Collapsing p-value
+8)  ARIEL p-value
+9)  Collapsing OR adjusted
+10) ARIEL OR adjusted
+11) Lower 95% Confidence Interval Collapsing OR adjusted
+12) Lower 95% Confidence Interval ARIEL OR adjusted
+13) Upper 95% Confidence Interval Collapsing OR adjusted
+14) Upper 95% Confidence Interval ARIEL OR adjusted
+15) Collapsing OR
+16) ARIEL OR
+
